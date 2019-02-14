@@ -26,3 +26,5 @@ yueyue.name = yueyue
 print("123")
 yueyue.doHomework()
 
+class StudentMan():
+    def __init__(self):
