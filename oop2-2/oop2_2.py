@@ -36,8 +36,9 @@ class Person():
     name = property(fget,fset,fdel,"对name进行操作")
 
 p1 = Person()
-p1.name = "zqc"
-
+print(p1.name)    #触发fget
+p1.name = "zqc"   #触发fset
+del p1.name       #触发fdel
 
 # __getattr__
 
@@ -48,7 +49,6 @@ class A():
     def __getattr__(self, name):
         print("没找到呀没找到")
         print(name)
-
 
 a = A()
 print(a.name)
@@ -130,3 +130,104 @@ yueyue.say()
 
 # 作业：
 # 自行查找三种方法内存使用方面的区别
+
+#抽象
+
+class Animal():
+    def sayHello(self):
+        pass
+class Dog(Animal):
+    def  sayHello(self):
+        print("闻一下对方")
+
+class Person(Animal):
+    def  sayHello(self):
+        print("稳一下对方")
+
+d = Dog()
+d.sayHello()
+
+p = Person()
+p.sayHello()
+
+#抽象类的实现
+import abc
+#声明一个类并且指定当前类的元类
+class Human(metaclass=abc,ABCMeta):
+    #定义一个抽象的方法
+    @ abc.abstractmethod
+    def smoking(self):
+        pass
+    #定义类抽象方法
+    @ abc.abstractclassmethod
+    def drink():
+        pass
+    #定义静态抽象方法
+    @ abc.abstractstaticmethod
+    def play():
+        pass
+
+    def sleep(self):
+        print("I'm sleeping……")
+
+#函数名可以当变量来用
+def sayHelllo(name):
+    print("{0}您好".format(name))
+
+sayHelllo("月月")
+
+liuyang = sayHelllo
+liuyang("月月")
+
+#组合类例子1
+# 自己定义一个类
+class A():
+    pass
+def say(self):
+    print("saying....")
+say(9)
+A.say = say
+
+a = A()
+a.say()
+
+# 组合类例子 2
+# 自己组装一个类
+from types import MethodType
+class A():
+    pass
+def say(self):
+    print("Saying......")
+
+a = A()
+a.say = MethodType(say,A)
+a.say()
+
+# 利用type造一个类
+
+# 先定义类应该具有的成员函数
+def say(self):
+    print("say......")
+def talk(self):
+    print("talking.....")
+
+A = type("AName",(object,),{"class.say":say,"class.talk":talk})
+a = A()
+a.class_say()
+a.class_talk()
+
+#元类演示
+#元类写法是固定的，必须继承自type
+# 元类一般命名以MetaClass结尾
+class ZqcMetaClass(type):
+    # 注意以下写法
+    def __new__(cls,name,bases,attrs):
+        print("哈哈，我是元类啊")
+        attrs['id'] = '0000'
+        return type.__new__(cls,name,bases,attrs)
+
+#元类定义完就可以使用
+class Teacher(object,metaclass=ZqcMetaClass):
+    pass
+t = Teacher()
+t.id
