@@ -1,4 +1,10 @@
-import p01
-stu = p01.Student("xiaojing",19)
+#import p01
+# import p01 as zqc
+# from p01 import Student
+zqc = importlib.import.module("p01")
+
+stu = zqc.Student("xiaojing",19)
 stu.say()
-p01.sayHello()
+zqc.sayHello()
+#=========================================
+
